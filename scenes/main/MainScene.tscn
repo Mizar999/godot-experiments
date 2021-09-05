@@ -1,24 +1,8 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=2 format=2]
 
-[ext_resource path="res://sprites/PC.tscn" type="PackedScene" id=1]
-[ext_resource path="res://sprites/Floor.tscn" type="PackedScene" id=2]
-[ext_resource path="res://sprites/Box.tscn" type="PackedScene" id=3]
-[ext_resource path="res://sprites/Target.tscn" type="PackedScene" id=4]
+[ext_resource path="res://scenes/main/InitWorld.cs" type="Script" id=1]
 
-[node name="MainScene" type="Node2D"]
+[node name="MainScene" type="Node"]
 
-[node name="PC" parent="." instance=ExtResource( 1 )]
-modulate = Color( 0.890196, 0.87451, 1, 1 )
-position = Vector2( 62.6468, 73.5784 )
-
-[node name="Floor" parent="." instance=ExtResource( 2 )]
-modulate = Color( 0.827451, 0.752941, 0.803922, 1 )
-position = Vector2( 95.0213, 71.8966 )
-
-[node name="Box" parent="." instance=ExtResource( 3 )]
-modulate = Color( 0.576471, 0.462745, 0.4, 1 )
-position = Vector2( 62.2263, 32.795 )
-
-[node name="Target" parent="." instance=ExtResource( 4 )]
-modulate = Color( 0.694118, 0.6, 0.580392, 1 )
-position = Vector2( 97.544, 30.6927 )
+[node name="InitWorld" type="Node" parent="."]
+script = ExtResource( 1 )
