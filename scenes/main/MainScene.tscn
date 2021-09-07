@@ -1,11 +1,17 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
-[ext_resource path="res://scenes/main/InitWorld.cs" type="Script" id=1]
+[ext_resource path="res://src/main/PCMove.cs" type="Script" id=1]
 [ext_resource path="res://scenes/gui/MainGUI.tscn" type="PackedScene" id=2]
+[ext_resource path="res://src/main/InitWorld.cs" type="Script" id=3]
 
 [node name="MainScene" type="Node"]
 
 [node name="InitWorld" type="Node" parent="."]
-script = ExtResource( 1 )
+script = ExtResource( 3 )
 
 [node name="MainGUI" parent="." instance=ExtResource( 2 )]
+
+[node name="PCMove" type="Node" parent="."]
+script = ExtResource( 1 )
+
+[connection signal="SpriteCreated" from="InitWorld" to="PCMove" method="_on_InitWorld_SpriteCreated"]
