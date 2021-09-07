@@ -33,7 +33,10 @@ public class PCMove : Node
             y += 1;
         }
 
-        _playerCharacter.Position = ConvertCoordinate.IndexToVector(x, y);
+        if (Board.IsInsideBoard(x, y))
+        {
+            _playerCharacter.Position = ConvertCoordinate.IndexToVector(x, y);
+        }
     }
 
     public void _on_InitWorld_SpriteCreated(Sprite newSprite)

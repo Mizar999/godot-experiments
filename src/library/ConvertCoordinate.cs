@@ -4,7 +4,7 @@ using Godot.Collections;
 public static class ConvertCoordinate
 {
     public const int StartX = 42;
-    public const int StartY = 52;
+    public const int StartY = 50;
     public const int StepX = 24;
     public const int StepY = 36;
 
