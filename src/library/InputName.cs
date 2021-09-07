@@ -4,4 +4,5 @@ public static class InputName
     public const string MoveRight = "move_right";
     public const string MoveUp = "move_up";
     public const string MoveDown = "move_down";
+    public const string InitWorld = "init_world";
 }

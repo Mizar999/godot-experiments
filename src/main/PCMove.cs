@@ -5,6 +5,11 @@ public class PCMove : Node
 {
     private Sprite _playerCharacter;
 
+    public override void _Ready()
+    {
+        SetProcessUnhandledInput(false);
+    }
+
     public override void _UnhandledInput(InputEvent @event)
     {
         Array<int> coords = ConvertCoordinate.VectorToArray(_playerCharacter.Position);
@@ -36,6 +41,7 @@ public class PCMove : Node
         if (newSprite.IsInGroup(GroupName.PlayerCharacter))
         {
             _playerCharacter = newSprite;
+            SetProcessUnhandledInput(true);
         }
     }
 }

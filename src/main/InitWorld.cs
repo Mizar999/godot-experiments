@@ -3,16 +3,23 @@ using Godot;
 public class InitWorld : Node
 {
     [Signal]
-    delegate void SpriteCreated(Sprite newSprite);
+    public delegate void SpriteCreated(Sprite newSprite);
 
     private static PackedScene _player = ResourceLoader.Load<PackedScene>("res://sprites/PC.tscn");
     private static PackedScene _floor = ResourceLoader.Load<PackedScene>("res://sprites/Floor.tscn");
 
-    // Called when the node enters the scene tree for the first time.
-    public override void _Ready()
+    public override void _UnhandledInput(InputEvent @event)
     {
-        CreateSprite(_player, GroupName.PlayerCharacter, 0, 0);
-        
+        if (@event.IsActionPressed(InputName.InitWorld))
+        {
+            InitFloor();
+            InitPlayerCharacter();
+            SetProcessUnhandledInput(false);
+        }
+    }
+
+    private void InitFloor()
+    {
         for(int x = 0; x < DungeonSize.MaxX; ++x)
         {
             for(int y = 0; y < DungeonSize.MaxY; ++y)
@@ -20,6 +27,11 @@ public class InitWorld : Node
                 CreateSprite(_floor, GroupName.Floor, x, y);
             }
         }
+    }
+
+    private void InitPlayerCharacter()
+    {
+        CreateSprite(_player, GroupName.PlayerCharacter, 0, 0);
     }
 
     private void CreateSprite(PackedScene prefab, string group, int x, int y, int offsetX = 0, int offsetY = 0)
