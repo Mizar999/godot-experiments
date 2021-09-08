@@ -10,3 +10,4 @@ region = Rect2( 72, 72, 24, 36 )
 modulate = Color( 0.576471, 0.462745, 0.4, 1 )
 z_index = 2
 texture = SubResource( 1 )
+centered = false

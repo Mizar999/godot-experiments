@@ -4,6 +4,12 @@ using Godot.Collections;
 public class PCMove : Node
 {
     private Sprite _playerCharacter;
+    private Board _board;
+
+    public void Initialize(Board board)
+    {
+        _board = board;
+    }
 
     public override void _Ready()
     {
@@ -12,30 +18,28 @@ public class PCMove : Node
 
     public override void _UnhandledInput(InputEvent @event)
     {
-        Array<int> coords = ConvertCoordinate.VectorToArray(_playerCharacter.Position);
-        int x = coords[0];
-        int y = coords[1];
+        Vector2 coord = _board.WorldToMap(_playerCharacter.Position);
 
         if (@event.IsActionPressed(InputName.MoveLeft))
         {
-            x -= 1;
+            coord.x -= 1;
         }
         else if (@event.IsActionPressed(InputName.MoveRight))
         {
-            x += 1;
+            coord.x += 1;
         }
         else if (@event.IsActionPressed(InputName.MoveUp))
         {
-            y -= 1;
+            coord.y -= 1;
         }
         else if (@event.IsActionPressed(InputName.MoveDown))
         {
-            y += 1;
+            coord.y += 1;
         }
 
-        if (Board.IsInsideBoard(x, y))
+        if (_board.IsInside(coord))
         {
-            _playerCharacter.Position = ConvertCoordinate.IndexToVector(x, y);
+            _playerCharacter.Position = _board.MapToWorld(coord);
         }
     }
 

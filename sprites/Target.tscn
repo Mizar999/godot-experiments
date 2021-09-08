@@ -4,9 +4,10 @@
 
 [sub_resource type="AtlasTexture" id=1]
 atlas = ExtResource( 1 )
-region = Rect2( 192, 252, 24, 36 )
+region = Rect2( 192, 180, 24, 36 )
 
 [node name="Target" type="Sprite"]
 modulate = Color( 0.694118, 0.6, 0.580392, 1 )
 z_index = 1
 texture = SubResource( 1 )
+centered = false

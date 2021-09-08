@@ -1,12 +1,14 @@
 using Godot;
 
-public class InitWorld : Node
+public class Board : TileMap
 {
+    public const int MaxX = 40;
+    public const int MaxY = 15;
+
     [Signal]
     public delegate void SpriteCreated(Sprite newSprite);
 
     private static PackedScene _player = ResourceLoader.Load<PackedScene>("res://sprites/PC.tscn");
-    private static PackedScene _floor = ResourceLoader.Load<PackedScene>("res://sprites/Floor.tscn");
     private static PackedScene _target = ResourceLoader.Load<PackedScene>("res://sprites/Target.tscn");
     private static PackedScene _box = ResourceLoader.Load<PackedScene>("res://sprites/Box.tscn");
 
@@ -22,13 +24,18 @@ public class InitWorld : Node
         }
     }
 
+    public bool IsInside(Vector2 coord)
+    {
+        return (coord.x > -1) && (coord.x < MaxX) && (coord.y > -1) && (coord.y < MaxY);
+    }
+
     private void InitFloor()
     {
-        for (int x = 0; x < Board.MaxX; ++x)
+        for(int x = 0; x < MaxX; ++x)
         {
-            for (int y = 0; y < Board.MaxY; ++y)
+            for(int y = 0; y < MaxY; ++y)
             {
-                CreateSprite(_floor, GroupName.Floor, x, y);
+                SetCell(x, y, 0);
             }
         }
     }
@@ -50,10 +57,10 @@ public class InitWorld : Node
         CreateSprite(_box, GroupName.Box, Board.MaxX - 5, Board.MaxY - 5);
     }
 
-    private void CreateSprite(PackedScene prefab, string group, int x, int y, int offsetX = 0, int offsetY = 0)
+    private void CreateSprite(PackedScene prefab, string group, int x, int y)
     {
         Sprite newSprite = prefab.Instance<Sprite>();
-        newSprite.Position = ConvertCoordinate.IndexToVector(x, y, offsetX, offsetY);
+        newSprite.Position = MapToWorld(new Vector2(x, y));
         newSprite.AddToGroup(group);
         AddChild(newSprite);
 
