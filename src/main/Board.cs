@@ -24,16 +24,16 @@ public class Board : TileMap
         }
     }
 
-    public bool IsInside(Vector2 coord)
+    public bool IsMovable(Vector2 coord)
     {
-        return (coord.x > -1) && (coord.x < MaxX) && (coord.y > -1) && (coord.y < MaxY);
+        return GetCell((int)coord.x, (int)coord.y) == 0;
     }
 
     private void InitFloor()
     {
-        for(int x = 0; x < MaxX; ++x)
+        for (int x = 0; x < MaxX; ++x)
         {
-            for(int y = 0; y < MaxY; ++y)
+            for (int y = 0; y < MaxY; ++y)
             {
                 SetCell(x, y, 0);
             }

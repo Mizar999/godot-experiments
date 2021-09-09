@@ -37,7 +37,7 @@ public class PCMove : Node
             coord.y += 1;
         }
 
-        if (_board.IsInside(coord))
+        if (_board.IsMovable(coord))
         {
             _playerCharacter.Position = _board.MapToWorld(coord);
         }
