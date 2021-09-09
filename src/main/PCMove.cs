@@ -1,9 +1,9 @@
 using Godot;
-using Godot.Collections;
+using System;
 
 public class PCMove : Node
 {
-    private Sprite _playerCharacter;
+    private KinematicBody2D _playerCharacter;
     private Board _board;
 
     public void Initialize(Board board)
@@ -37,18 +37,20 @@ public class PCMove : Node
             coord.y += 1;
         }
 
-        if (_board.IsMovable(coord))
+        if (_board.IsPassable(coord))
         {
             _playerCharacter.Position = _board.MapToWorld(coord);
         }
     }
 
-    public void _on_InitWorld_SpriteCreated(Sprite newSprite)
+    public void OnPlayerCreated(KinematicBody2D body)
     {
-        if (newSprite.IsInGroup(GroupName.PlayerCharacter))
+        if (!body.IsInGroup(GroupName.PlayerCharacter))
         {
-            _playerCharacter = newSprite;
-            SetProcessUnhandledInput(true);
+            throw new Exception(string.Format("Expected group '{0}'!", GroupName.PlayerCharacter));
         }
+
+        _playerCharacter = body;
+        SetProcessUnhandledInput(true);
     }
 }

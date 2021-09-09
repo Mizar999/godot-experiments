@@ -6,11 +6,11 @@ public class Board : TileMap
     public const int MaxY = 15;
 
     [Signal]
-    public delegate void SpriteCreated(Sprite newSprite);
+    public delegate void PlayerCreated(KinematicBody2D body);
 
-    private static PackedScene _player = ResourceLoader.Load<PackedScene>("res://sprites/PC.tscn");
-    private static PackedScene _target = ResourceLoader.Load<PackedScene>("res://sprites/Target.tscn");
-    private static PackedScene _box = ResourceLoader.Load<PackedScene>("res://sprites/Box.tscn");
+    private static PackedScene _player = ResourceLoader.Load<PackedScene>("res://objects/Player.tscn");
+    private static PackedScene _target = ResourceLoader.Load<PackedScene>("res://objects/Target.tscn");
+    private static PackedScene _box = ResourceLoader.Load<PackedScene>("res://objects/Box.tscn");
 
     public override void _UnhandledInput(InputEvent @event)
     {
@@ -24,7 +24,7 @@ public class Board : TileMap
         }
     }
 
-    public bool IsMovable(Vector2 coord)
+    public bool IsPassable(Vector2 coord)
     {
         return GetCell((int)coord.x, (int)coord.y) == 0;
     }
@@ -42,28 +42,44 @@ public class Board : TileMap
 
     private void InitPlayerCharacter()
     {
-        CreateSprite(_player, GroupName.PlayerCharacter, 0, 0);
+        CreatePlayer(0, 0);
     }
 
     private void InitTarget()
     {
-        CreateSprite(_target, GroupName.Target, 3, 3);
-        CreateSprite(_target, GroupName.Target, 3, Board.MaxY - 3);
+        CreateTarget(3, 3);
+        CreateTarget(3, Board.MaxY - 3);
     }
 
     private void InitBox()
     {
-        CreateSprite(_box, GroupName.Box, Board.MaxX - 5, 5);
-        CreateSprite(_box, GroupName.Box, Board.MaxX - 5, Board.MaxY - 5);
+        CreateBox(Board.MaxX - 5, 5);
+        CreateBox(Board.MaxX - 5, Board.MaxY - 5);
     }
 
-    private void CreateSprite(PackedScene prefab, string group, int x, int y)
+    private void CreatePlayer(int x, int y)
     {
-        Sprite newSprite = prefab.Instance<Sprite>();
-        newSprite.Position = MapToWorld(new Vector2(x, y));
-        newSprite.AddToGroup(group);
-        AddChild(newSprite);
+        KinematicBody2D player = _player.Instance<KinematicBody2D>();
+        player.Position = MapToWorld(new Vector2(x, y));
+        player.AddToGroup(GroupName.PlayerCharacter);
+        AddChild(player);
 
-        EmitSignal(nameof(SpriteCreated), newSprite);
+        EmitSignal(nameof(PlayerCreated), player);
+    }
+
+    private void CreateBox(int x, int y)
+    {
+        KinematicBody2D box = _box.Instance<KinematicBody2D>();
+        box.Position = MapToWorld(new Vector2(x, y));
+        box.AddToGroup(GroupName.Box);
+        AddChild(box);
+    }
+
+    private void CreateTarget(int x, int y)
+    {
+        Area2D target = _target.Instance<Area2D>();
+        target.Position = MapToWorld(new Vector2(x, y));
+        target.AddToGroup(GroupName.Target);
+        AddChild(target);
     }
 }
