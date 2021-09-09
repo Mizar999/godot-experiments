@@ -10,3 +10,10 @@ data_*/
 
 # Project-specific ignores
 export/
+
+# Visual Studio Code
+.vscode/*
+*.code-workspace
+
+# Local History for Visual Studio Code
+.history/
