@@ -5,9 +5,6 @@ public class Board : TileMap
     public const int MaxX = 40;
     public const int MaxY = 15;
 
-    [Signal]
-    public delegate void PlayerCreated(KinematicBody2D body);
-
     private static PackedScene _player = ResourceLoader.Load<PackedScene>("res://objects/Player.tscn");
     private static PackedScene _target = ResourceLoader.Load<PackedScene>("res://objects/Target.tscn");
     private static PackedScene _box = ResourceLoader.Load<PackedScene>("res://objects/Box.tscn");
@@ -53,18 +50,18 @@ public class Board : TileMap
 
     private void InitBox()
     {
+        CreateBox(3, 1);
         CreateBox(Board.MaxX - 5, 5);
         CreateBox(Board.MaxX - 5, Board.MaxY - 5);
     }
 
     private void CreatePlayer(int x, int y)
     {
-        KinematicBody2D player = _player.Instance<KinematicBody2D>();
+        Player player = _player.Instance<Player>();
         player.Position = MapToWorld(new Vector2(x, y));
         player.AddToGroup(GroupName.PlayerCharacter);
+        player.Initialize(this);
         AddChild(player);
-
-        EmitSignal(nameof(PlayerCreated), player);
     }
 
     private void CreateBox(int x, int y)

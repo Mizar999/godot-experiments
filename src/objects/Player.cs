@@ -1,9 +1,8 @@
 using Godot;
 using System;
 
-public class PCMove : Node
+public class Player : KinematicBody2D
 {
-    private KinematicBody2D _playerCharacter;
     private Board _board;
 
     public void Initialize(Board board)
@@ -11,14 +10,9 @@ public class PCMove : Node
         _board = board;
     }
 
-    public override void _Ready()
-    {
-        SetProcessUnhandledInput(false);
-    }
-
     public override void _UnhandledInput(InputEvent @event)
     {
-        Vector2 coord = _board.WorldToMap(_playerCharacter.Position);
+        Vector2 coord = _board.WorldToMap(Position);
 
         if (@event.IsActionPressed(InputName.MoveLeft))
         {
@@ -37,20 +31,19 @@ public class PCMove : Node
             coord.y += 1;
         }
 
-        if (_board.IsPassable(coord))
+        Vector2 worldCoord = _board.MapToWorld(coord);
+        if (Position != worldCoord && _board.IsPassable(coord) && CanMove(worldCoord))
         {
-            _playerCharacter.Position = _board.MapToWorld(coord);
+            Position = worldCoord;
         }
     }
 
-    public void OnPlayerCreated(KinematicBody2D body)
+    private bool CanMove(Vector2 target)
     {
-        if (!body.IsInGroup(GroupName.PlayerCharacter))
-        {
-            throw new Exception(string.Format("Expected group '{0}'!", GroupName.PlayerCharacter));
-        }
-
-        _playerCharacter = body;
-        SetProcessUnhandledInput(true);
+        // TODO Fix me
+        Transform2D futureTransform = new Transform2D(Rotation, Position);
+        futureTransform.origin = target;
+        GD.Print(Transform.x, Transform.y, Transform.origin, futureTransform.x, futureTransform.y, futureTransform.origin);
+        return !TestMove(futureTransform, Vector2.Zero);
     }
 }
