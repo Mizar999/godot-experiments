@@ -4,6 +4,7 @@ public class Board : TileMap
 {
     public const int MaxX = 40;
     public const int MaxY = 15;
+    public const int RayCastLength = 24;
 
     private static PackedScene _player = ResourceLoader.Load<PackedScene>("res://objects/Player.tscn");
     private static PackedScene _target = ResourceLoader.Load<PackedScene>("res://objects/Target.tscn");
@@ -66,7 +67,7 @@ public class Board : TileMap
 
     private void CreateBox(int x, int y)
     {
-        KinematicBody2D box = _box.Instance<KinematicBody2D>();
+        StaticBody2D box = _box.Instance<StaticBody2D>();
         box.Position = MapToWorld(new Vector2(x, y));
         box.AddToGroup(GroupName.Box);
         AddChild(box);

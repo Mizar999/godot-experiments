@@ -7,10 +7,9 @@ atlas = ExtResource( 1 )
 region = Rect2( 72, 72, 24, 36 )
 
 [sub_resource type="RectangleShape2D" id=2]
-extents = Vector2( 11, 17 )
+extents = Vector2( 10, 14 )
 
-[node name="Box" type="KinematicBody2D"]
-z_index = 2
+[node name="Box" type="StaticBody2D"]
 
 [node name="Sprite" type="Sprite" parent="."]
 modulate = Color( 0.576471, 0.462745, 0.4, 1 )

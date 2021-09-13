@@ -1,9 +1,14 @@
 using Godot;
-using System;
 
-public class Player : KinematicBody2D
+public class Player : Area2D
 {
     private Board _board;
+    private RayCast2D _raycast;
+
+    public override void _Ready()
+    {
+        _raycast = GetNode<RayCast2D>("RayCast2D");
+    }
 
     public void Initialize(Board board)
     {
@@ -12,38 +17,39 @@ public class Player : KinematicBody2D
 
     public override void _UnhandledInput(InputEvent @event)
     {
-        Vector2 coord = _board.WorldToMap(Position);
+        Vector2 direction = Vector2.Zero;
 
         if (@event.IsActionPressed(InputName.MoveLeft))
         {
-            coord.x -= 1;
+            direction = Vector2.Left;
         }
         else if (@event.IsActionPressed(InputName.MoveRight))
         {
-            coord.x += 1;
+            direction = Vector2.Right;
         }
         else if (@event.IsActionPressed(InputName.MoveUp))
         {
-            coord.y -= 1;
+            direction = Vector2.Up;
         }
         else if (@event.IsActionPressed(InputName.MoveDown))
         {
-            coord.y += 1;
+            direction = Vector2.Down;
         }
 
-        Vector2 worldCoord = _board.MapToWorld(coord);
-        if (Position != worldCoord && _board.IsPassable(coord) && CanMove(worldCoord))
+        if (direction != Vector2.Zero)
         {
-            Position = worldCoord;
+            Vector2 coord = _board.WorldToMap(Position);
+            if (_board.IsPassable(coord + direction) && CanMoveToDirection(direction))
+            {
+                Position = _board.MapToWorld(coord + direction);
+            }
         }
     }
 
-    private bool CanMove(Vector2 target)
+    private bool CanMoveToDirection(Vector2 direction)
     {
-        // TODO Fix me
-        Transform2D futureTransform = new Transform2D(Rotation, Position);
-        futureTransform.origin = target;
-        GD.Print(Transform.x, Transform.y, Transform.origin, futureTransform.x, futureTransform.y, futureTransform.origin);
-        return !TestMove(futureTransform, Vector2.Zero);
+        _raycast.CastTo = direction * Board.RayCastLength;
+        _raycast.ForceRaycastUpdate();
+        return !_raycast.IsColliding();
     }
 }
