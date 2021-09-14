@@ -39,9 +39,20 @@ public class Player : Area2D
         if (direction != Vector2.Zero)
         {
             Vector2 coord = _board.WorldToMap(Position);
-            if (_board.IsPassable(coord + direction) && CanMoveToDirection(direction))
+            if (_board.IsPassable(coord + direction))
             {
-                Position = _board.MapToWorld(coord + direction);
+                if (CanMoveToDirection(direction))
+                {
+                    Position = _board.MapToWorld(coord + direction);
+                }
+                else
+                {
+                    Box box = _raycast.GetCollider() as Box;
+                    if (box != null)
+                    {
+                        box.Push(direction);
+                    }
+                }
             }
         }
     }

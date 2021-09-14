@@ -67,9 +67,10 @@ public class Board : TileMap
 
     private void CreateBox(int x, int y)
     {
-        StaticBody2D box = _box.Instance<StaticBody2D>();
+        Box box = _box.Instance<Box>();
         box.Position = MapToWorld(new Vector2(x, y));
         box.AddToGroup(GroupName.Box);
+        box.Initialize(this);
         AddChild(box);
     }
 
