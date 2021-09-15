@@ -4,7 +4,7 @@ public class Board : TileMap
 {
     public const int MaxX = 40;
     public const int MaxY = 15;
-    public const int RayCastLength = 24;
+    public static readonly Vector2 TileSize = new Vector2(24, 36);
 
     private static PackedScene _player = ResourceLoader.Load<PackedScene>("res://objects/Player.tscn");
     private static PackedScene _target = ResourceLoader.Load<PackedScene>("res://objects/Target.tscn");

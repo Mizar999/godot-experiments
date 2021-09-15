@@ -1,14 +1,8 @@
 using Godot;
 
-public class Player : Area2D
+public class Player : KinematicBody2D
 {
     private Board _board;
-    private RayCast2D _raycast;
-
-    public override void _Ready()
-    {
-        _raycast = GetNode<RayCast2D>("RayCast2D");
-    }
 
     public void Initialize(Board board)
     {
@@ -38,16 +32,14 @@ public class Player : Area2D
 
         if (direction != Vector2.Zero)
         {
-            Vector2 coord = _board.WorldToMap(Position);
-            if (_board.IsPassable(coord + direction))
+            if (_board.IsPassable(_board.WorldToMap(Position) + direction))
             {
-                if (CanMoveToDirection(direction))
+                Vector2 oldPosition = Position;
+                KinematicCollision2D collision = MoveAndCollide(direction * Board.TileSize);
+                if (collision != null)
                 {
-                    Position = _board.MapToWorld(coord + direction);
-                }
-                else
-                {
-                    Box box = _raycast.GetCollider() as Box;
+                    Position = oldPosition;
+                    Box box = collision.Collider as Box;
                     if (box != null)
                     {
                         box.Push(direction);
@@ -55,12 +47,5 @@ public class Player : Area2D
                 }
             }
         }
-    }
-
-    private bool CanMoveToDirection(Vector2 direction)
-    {
-        _raycast.CastTo = direction * Board.RayCastLength;
-        _raycast.ForceRaycastUpdate();
-        return !_raycast.IsColliding();
     }
 }
