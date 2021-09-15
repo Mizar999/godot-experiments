@@ -1,5 +1,6 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
+[ext_resource path="res://src/main/GameController.cs" type="Script" id=1]
 [ext_resource path="res://scenes/gui/MainGUI.tscn" type="PackedScene" id=2]
 [ext_resource path="res://src/main/MainScene.cs" type="Script" id=4]
 [ext_resource path="res://assets/curses_vector_24x36.png" type="Texture" id=5]
@@ -32,3 +33,6 @@ tile_set = SubResource( 1 )
 cell_size = Vector2( 24, 36 )
 format = 1
 script = ExtResource( 6 )
+
+[node name="GameController" type="Node" parent="."]
+script = ExtResource( 1 )

@@ -10,6 +10,13 @@ public class Board : TileMap
     private static PackedScene _target = ResourceLoader.Load<PackedScene>("res://objects/Target.tscn");
     private static PackedScene _box = ResourceLoader.Load<PackedScene>("res://objects/Box.tscn");
 
+    private GameController _controller;
+
+    public void Initialize(GameController controller)
+    {
+        _controller = controller;
+    }
+
     public override void _UnhandledInput(InputEvent @event)
     {
         if (@event.IsActionPressed(InputName.InitWorld))
@@ -76,9 +83,10 @@ public class Board : TileMap
 
     private void CreateTarget(int x, int y)
     {
-        Area2D target = _target.Instance<Area2D>();
+        Target target = _target.Instance<Target>();
         target.Position = MapToWorld(new Vector2(x, y));
         target.AddToGroup(GroupName.Target);
+        target.Initialize(_controller);
         AddChild(target);
     }
 }
