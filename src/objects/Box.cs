@@ -11,21 +11,15 @@ public class Box : KinematicBody2D
 
     public void Push(Vector2 direction)
     {
-        Vector2 coord = _board.WorldToMap(Position) + direction.Normalized();
-        Vector2 target = _board.MapToWorld(coord);
-        GD.Print(coord, _board.IsPassable(coord), Position, target, CanMove(target));
-
-        if (_board.IsPassable(coord) && CanMove(target))
+        Vector2 coord = _board.WorldToMap(Position) + direction;
+        if (_board.IsPassable(coord))
         {
-            Position = target;
+            Vector2 oldPosition = Position;
+            KinematicCollision2D collision = MoveAndCollide(direction * Board.TileSize);
+            if (collision != null)
+            {
+                Position = oldPosition;
+            }
         }
-    }
-
-    private bool CanMove(Vector2 moveTo)
-    {
-        // TODO Bug: Cannot push box to the right
-        Transform2D futureTransform = new Transform2D(Rotation, Position);
-        futureTransform.origin = moveTo;
-        return !TestMove(futureTransform, Vector2.Zero);
     }
 }

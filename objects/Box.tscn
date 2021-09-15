@@ -8,7 +8,7 @@ atlas = ExtResource( 1 )
 region = Rect2( 72, 72, 24, 36 )
 
 [sub_resource type="RectangleShape2D" id=2]
-extents = Vector2( 10, 14 )
+extents = Vector2( 10, 16 )
 
 [node name="Box" type="KinematicBody2D"]
 z_index = 2
