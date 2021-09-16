@@ -9,8 +9,9 @@ public class Box : KinematicBody2D
         _board = board;
     }
 
-    public void Push(Vector2 direction)
+    public bool Push(Vector2 direction)
     {
+        bool wasPushed = false;
         Vector2 coord = _board.WorldToMap(Position) + direction;
         if (_board.IsPassable(coord))
         {
@@ -20,6 +21,12 @@ public class Box : KinematicBody2D
             {
                 Position = oldPosition;
             }
+            else
+            {
+                wasPushed = true;
+            }
         }
+
+        return wasPushed;
     }
 }

@@ -18,8 +18,6 @@ public class GameController : Node
 
     public void OnBoxEntered(Node body)
     {
-        _gui.SetText(string.Format("Entered: {0}", body.Name));
-
         if (IsBox(body))
         {
             ++_targetsWithBox;
@@ -32,8 +30,6 @@ public class GameController : Node
 
     public void OnBoxExited(Node body)
     {
-        _gui.SetText(string.Format("Exited: {0}", body.Name));
-
         if (IsBox(body))
         {
             --_targetsWithBox;
