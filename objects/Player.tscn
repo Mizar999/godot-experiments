@@ -11,6 +11,7 @@ region = Rect2( 0, 144, 24, 36 )
 extents = Vector2( 10, 16 )
 
 [node name="Player" type="KinematicBody2D"]
+z_index = 2
 script = ExtResource( 2 )
 
 [node name="Sprite" type="Sprite" parent="."]
