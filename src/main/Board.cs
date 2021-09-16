@@ -2,6 +2,9 @@ using Godot;
 
 public class Board : TileMap
 {
+    [Signal]
+    public delegate void LevelCreated(int numberOfTargets);
+
     public const int MaxX = 40;
     public const int MaxY = 15;
     public static readonly Vector2 TileSize = new Vector2(24, 36);
@@ -11,10 +14,13 @@ public class Board : TileMap
     private static PackedScene _box = ResourceLoader.Load<PackedScene>("res://objects/Box.tscn");
 
     private GameController _controller;
+    private MainGUI _gui;
+    private int _numberOfTargets;
 
-    public void Initialize(GameController controller)
+    public void Initialize(GameController controller, MainGUI gui)
     {
         _controller = controller;
+        _gui = gui;
     }
 
     public override void _UnhandledInput(InputEvent @event)
@@ -25,6 +31,10 @@ public class Board : TileMap
             InitPlayerCharacter();
             InitTarget();
             InitBox();
+
+            EmitSignal(nameof(LevelCreated), _numberOfTargets);
+
+            _gui.SetText("push # boxes to the X targets");
             SetProcessUnhandledInput(false);
         }
     }
@@ -88,5 +98,7 @@ public class Board : TileMap
         target.AddToGroup(GroupName.Target);
         target.Initialize(_controller);
         AddChild(target);
+
+        ++_numberOfTargets;
     }
 }
