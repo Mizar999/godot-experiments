@@ -1,4 +1,5 @@
 using Godot;
+using System.Collections.Generic;
 
 public class Board : TileMap
 {
@@ -15,6 +16,20 @@ public class Board : TileMap
 
     private GameController _controller;
     private MainGUI _gui;
+
+    private class ResetPosition
+    {
+        public Node2D Node { get; }
+        public Vector2 Position { get; }
+
+        public ResetPosition(Node2D node, Vector2 position)
+        {
+            Node = node;
+            Position = position;
+        }
+    }
+
+    private List<ResetPosition> _objects;
     private int _numberOfTargets;
 
     public void Initialize(GameController controller, MainGUI gui)
@@ -27,6 +42,8 @@ public class Board : TileMap
     {
         if (@event.IsActionPressed(InputName.InitWorld))
         {
+            _objects = new List<ResetPosition>();
+
             InitFloor();
             InitPlayerCharacter();
             InitTarget();
@@ -34,8 +51,16 @@ public class Board : TileMap
 
             EmitSignal(nameof(LevelCreated), _numberOfTargets);
 
-            _gui.SetText("push # boxes to the X targets");
+            _gui.SetText(MessageController.TutorialMessage);
             SetProcessUnhandledInput(false);
+        }
+    }
+
+    public void OnLevelReset()
+    {
+        foreach(ResetPosition element in _objects)
+        {
+            element.Node.Position = element.Position;
         }
     }
 
@@ -80,6 +105,10 @@ public class Board : TileMap
         player.AddToGroup(GroupName.PlayerCharacter);
         player.Initialize(this);
         AddChild(player);
+
+        _objects.Add(new ResetPosition(player, player.Position));
+
+        player.Connect(nameof(Player.LevelReset), this, nameof(Board.OnLevelReset));
     }
 
     private void CreateBox(int x, int y)
@@ -89,6 +118,8 @@ public class Board : TileMap
         box.AddToGroup(GroupName.Box);
         box.Initialize(this);
         AddChild(box);
+
+        _objects.Add(new ResetPosition(box, box.Position));
     }
 
     private void CreateTarget(int x, int y)
@@ -100,5 +131,6 @@ public class Board : TileMap
         AddChild(target);
 
         ++_numberOfTargets;
+        _objects.Add(new ResetPosition(target, target.Position));
     }
 }

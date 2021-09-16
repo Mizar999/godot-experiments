@@ -2,6 +2,9 @@ using Godot;
 
 public class Player : KinematicBody2D
 {
+    [Signal]
+    public delegate void LevelReset();
+
     private Board _board;
     private Vector2 _currentDirection = Vector2.Zero;
     private float _waitMove;
@@ -23,6 +26,12 @@ public class Player : KinematicBody2D
 
     public override void _UnhandledInput(InputEvent @event)
     {
+        if (@event.IsActionPressed(InputName.InitWorld))
+        {
+            EmitSignal(nameof(LevelReset));
+            return;
+        }
+
         UpdateCurrentDirection(@event);
 
         if (_waitMove > 0)

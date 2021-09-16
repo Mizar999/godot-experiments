@@ -14,6 +14,7 @@ public class GameController : Node
     public void OnLevelCreated(int numberOfTargets)
     {
         _numberOfTargets = numberOfTargets;
+        _targetsWithBox = 0;
     }
 
     public void OnBoxEntered(Node body)
@@ -23,7 +24,7 @@ public class GameController : Node
             ++_targetsWithBox;
             if (_targetsWithBox == _numberOfTargets)
             {
-                _gui.SetText("You win!");
+                _gui.SetText(MessageController.WinMessage);
             }
         }
     }
@@ -32,6 +33,10 @@ public class GameController : Node
     {
         if (IsBox(body))
         {
+            if (_targetsWithBox == _numberOfTargets)
+            {
+                _gui.SetText(MessageController.TutorialMessage);
+            }
             --_targetsWithBox;
         }
     }

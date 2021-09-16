@@ -12,5 +12,7 @@ public class MainScene : Node
 
         board.Initialize(gameController, gui);
         board.Connect(nameof(Board.LevelCreated), gameController, nameof(GameController.OnLevelCreated));
+
+        gui.SetText(MessageController.StartMessage);
     }
 }
