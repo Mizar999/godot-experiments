@@ -131,6 +131,5 @@ public class Board : TileMap
         AddChild(target);
 
         ++_numberOfTargets;
-        _objects.Add(new ResetPosition(target, target.Position));
     }
 }
